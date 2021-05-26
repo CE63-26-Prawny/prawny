@@ -1,0 +1,33 @@
+version: "3.9" 
+services:
+  frontend:
+    build: ./frontend/.
+    ports:
+      - "4000:80"
+    depends_on:
+      - db
+      - backend
+  backend:
+    build: ./backend/.
+    ports:
+      - "4001:4001"
+    environment:
+      PRAWNY_DB_HOST: db
+      PRAWNY_DB_PORT: 5432
+      PRAWNY_DB_NAME: postgres
+      PRAWNY_DB_USER: postgres
+      PRAWNY_DB_PW: example
+      PRAWNY_MQTT_USER: example
+      PRAWNY_MQTT_PW: example
+      PRAWNY_MQTT_ADDRESS: mqtt
+      PRAWNY_MQTT_CA_PATH: example
+      PRAWNY_LINE_CHANNEL_ACCESS_TOKEN: secret
+    depends_on: 
+      - db
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: example
